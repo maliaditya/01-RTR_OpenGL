@@ -7,7 +7,7 @@
 		strncpy(szAppName, title, sizeof(szAppName) - 1);
 		szAppName[sizeof(szAppName) - 1] = '\0'; // Ensure null-termination
 
-		if(!init(hInstance, iCmdShow))
+		if(!init())
         {
             std::cerr<<"Window creation failed";
         }
@@ -16,8 +16,9 @@
 	Window::~Window() {
 		// Clean up resources if needed
 	}
-    int Window::init(HINSTANCE hInstance,int iCmdShow) {
-        // initialization of WNDCLASSEX structure
+    int Window::init() 
+    {
+        
         wndclass.cbSize = sizeof(WNDCLASSEX);
         wndclass.style = CS_HREDRAW | CS_VREDRAW;
         wndclass.cbClsExtra = 0;

@@ -226,13 +226,15 @@ GLuint cubeNormalVBO;
 GLuint cubeTextcorrdVBO;
 GLuint cubeEBO;
 
-
+Logger cube("Cube.log");
 // Function Declaration
-void cubeInit(void)
+int cubeInit(void)
 {
+    cube.printVectorToLog("Positions",cubePositions);
+
     // Create and Compile Shaders
-    cubeVertexShader = createShader(GL_VERTEX_SHADER, cubeVertexShaderSource);
-    cubeFragmentShader = createShader(GL_FRAGMENT_SHADER, cubeFragmentShaderSource);
+    cubeVertexShader = createShader(GL_VERTEX_SHADER, cubeVertexShaderSource, "Cube");
+    cubeFragmentShader = createShader(GL_FRAGMENT_SHADER, cubeFragmentShaderSource, "Cube");
 
     // Prelinking attributes
     std::unordered_map<std::string, GLuint> attributes = {
@@ -242,7 +244,7 @@ void cubeInit(void)
         {"a_texcoord", ATTRIBUTE_TEXCOORD},
     };
     // Linking Shaders
-    cubeShaderProgramObject = linkShadersAndAttributes(cubeVertexShader, cubeFragmentShader, attributes);
+    cubeShaderProgramObject = linkShadersAndAttributes(cubeVertexShader, cubeFragmentShader, attributes,"Cube");
 
     // Delete Shaders
     glDeleteShader(cubeVertexShader);
@@ -270,7 +272,10 @@ void cubeInit(void)
 
     // unbindVertexArray
     unbindVertexArray();
+
+    return 0;
 }
+
 void cubeDisplay(glm::mat4 viewMatrix, glm::mat4 projectionMatrix)
 {
     // useprogram cubeShaderProgramObject

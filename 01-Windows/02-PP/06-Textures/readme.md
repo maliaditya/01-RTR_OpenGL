@@ -1,4 +1,4 @@
-# Procedural 2D/3D Geometries
+# Multitexturing
 
 ## Output
 

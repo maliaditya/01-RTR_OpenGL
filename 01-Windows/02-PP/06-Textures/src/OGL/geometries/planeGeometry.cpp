@@ -66,6 +66,7 @@ namespace OGL{
     Geometry planeGeometry( float width ,float height,int numRows,int numCols)
     {
         Geometry geometry;
+        geometry.name = "Plane";
         generatePlaneGeometry( width,  height,  numRows, numCols, geometry.positions, geometry.normals, geometry.uv, geometry.indices);
         return(geometry);
     }

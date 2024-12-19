@@ -14,6 +14,6 @@ namespace OGL{
     extern const char* basicMaterialVsSource;
     extern const char* basicMaterialFsSource;
     extern Material basicMaterial(void);
-    extern void displayBasic(glm::mat4 viewMatrix, glm::mat4 projectionMatrix, Mesh object);
+    extern void displayBasic(Camera camera,Mesh mesh);
     extern void updateBasic(float elapsedTime);
 }

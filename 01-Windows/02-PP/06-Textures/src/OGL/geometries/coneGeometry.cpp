@@ -66,6 +66,7 @@ namespace OGL{
     Geometry coneGeometry(float radius, float height, int slices)
     {
         Geometry geometry;
+        geometry.name = "Cone";
         generateConeGeometry(radius, height, slices, geometry.positions,geometry.normals,geometry.uv,geometry.indices);
         return(geometry);
     }

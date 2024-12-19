@@ -3,10 +3,9 @@
 
 
 // functions: 
-Mesh  createMesh(Geometry geometry, Material material, std::string name)
+Mesh  createMesh(Geometry geometry, Material material)
 {
     Mesh mesh;
-    mesh.name = name;
     mesh.geometry = geometry;
     mesh.material = material;
     
@@ -48,7 +47,6 @@ void displayObject(glm::mat4 viewMatrix, glm::mat4 projectionMatrix, Mesh object
     setUniformMatrix4fv(object.material.shaderProgramObject,"u_projectionMatrix" ,projectionMatrix);
     setUniformMatrix4fv(object.material.shaderProgramObject,"u_viewMatrix" ,viewMatrix);
     setUniformMatrix4fv(object.material.shaderProgramObject,"u_modelMatrix" ,object.modelMatrix);
-
 
     // bind vao
     glBindVertexArray(object.VAO);

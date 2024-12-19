@@ -61,6 +61,7 @@ namespace OGL{
     Geometry sphereGeometry(float radius, int slices, int stack)
     {
         Geometry geometry;
+        geometry.name = "Sphere";
         generateSphereGeometry(radius,slices, stack,geometry.positions, geometry.normals,geometry.uv,geometry.indices);
         return(geometry);
     }

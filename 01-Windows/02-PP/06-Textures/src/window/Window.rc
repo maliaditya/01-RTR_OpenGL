@@ -1,2 +1,3 @@
 #include "resource.h"
-MYICON ICON aditya.ico
+MYICON ICON "resources\\icons\\aditya.ico"
+

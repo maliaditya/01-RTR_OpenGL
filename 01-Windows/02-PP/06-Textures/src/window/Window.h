@@ -2,8 +2,6 @@
 #include <windows.h>
 #include <utils/Logger.h>
 
-
-
 class Window
 {
     // Code

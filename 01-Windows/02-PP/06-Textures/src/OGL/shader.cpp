@@ -102,3 +102,46 @@ void setUniformMatrix4fv(GLuint shaderProgramObject, const char* uniform, glm::m
     }
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
+
+
+void setUniform1i(GLuint shaderProgramObject, const char* uniform, GLuint textureUnit)
+{
+    GLint location = glGetUniformLocation(shaderProgramObject, uniform);
+    if (location == -1)
+    {
+        shaderlog.debug("Uniform not found: ", uniform);
+        return;
+    }
+    
+    // Set the uniform to refer to the given texture unit (e.g., textureUnit 0, 1, 2, etc.)
+    glUniform1i(location, textureUnit);  // Use glUniform1i to set the uniform value as texture unit
+}
+
+
+
+void setUniform2fv(GLuint shaderProgramObject, const char* uniform, glm::vec2 value)
+{
+    GLint location = glGetUniformLocation(shaderProgramObject, uniform);
+    if (location == -1)
+    {
+        shaderlog.debug("Uniform not found: ", uniform);
+        return;
+    }
+    
+    // Set the uniform to refer to the given texture unit (e.g., textureUnit 0, 1, 2, etc.)
+    glUniform2fv(location,1,glm::value_ptr(value));  // Use glUniform2fv to set the uniform value as texture unit
+}
+
+
+void setUniform1f(GLuint shaderProgramObject, const char* uniform, GLfloat value)
+{
+    GLint location = glGetUniformLocation(shaderProgramObject, uniform);
+    if (location == -1)
+    {
+        shaderlog.debug("Uniform not found: ", uniform);
+        return;
+    }
+    
+    // Set the uniform to refer to the given texture unit (e.g., textureUnit 0, 1, 2, etc.)
+    glUniform1f(location, value);  // Use glUniform1i to set the uniform value as texture unit
+}

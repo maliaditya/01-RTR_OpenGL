@@ -20,6 +20,7 @@ enum MaterialType {
 
 struct Geometry  // vertexdata
 {
+    std::string name;
     std::vector<glm::vec3> positions; 
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> uv; 
@@ -36,11 +37,14 @@ struct Uniform {
         : name(uniformName), value(uniformValue) {}
 };
 
+
 // Define the Material structure to store shader program, uniforms, and attributes
 struct Material {
     GLuint shaderProgramObject;
+    MaterialType type;
     std::unordered_map<std::string, Uniform<float>> uniforms; // Example: float uniforms
     std::unordered_map<std::string, GLuint> attributes;
+   
 
     // Add uniforms of different types
     template <typename T>
@@ -54,11 +58,28 @@ struct Material {
     }
 };
 
+struct Texture 
+{
+    GLuint colorMap = 0;
+    GLuint alphaMap = 0;
+    GLuint aoMap = 0;
+    GLuint roughnessMap = 0;
+    GLuint  metalnessMap = 0;
+    GLuint normalMap = 0;
+    GLuint displacementMap = 0;
+    GLfloat displacementBias = 0.0f;
+    GLfloat displacementScale = 0.0f;
+    glm::vec2 repeatALL = glm::vec2(1,1);
+
+};
+
 // data: 
 struct Mesh {   
     std::string name;
     Geometry geometry;
     Material material;
+    Texture texture;
+    float angle_ =0;
 
     // OpenGL buffers
     GLuint VAO; 
@@ -90,28 +111,29 @@ struct Mesh {
     // Method to apply rotation on the X axis
     void rotateX(float angle)
     {   
-        rotation.x = angle;
+        rotation.x += angle;
         updateModelMatrix();
     }
 
     // Method to apply rotation on the Y axis
     void rotateY(float angle)
     {   
-        rotation.y = angle;
+        rotation.y += angle;
         updateModelMatrix();
     }
     
     // Method to apply rotation on the Z axis
     void rotateZ(float angle)
     {   
-        rotation.z = angle;
+        rotation.z += angle;
         updateModelMatrix();
     }
 
     // Method to apply the same rotation on all axes
     void rotate(float angle)
-    {
-        rotation = glm::vec3(angle, angle, angle);
+    {   
+        angle_ += angle;
+        rotation = glm::vec3(angle_, angle_, angle_);
         updateModelMatrix();
     }
 
@@ -201,8 +223,8 @@ struct Light {
 
 struct Camera {
     
+    glm::mat4 projectionMatrix = glm::mat4(1.0);  
     glm::mat4 transform = glm::mat4(1.0);  // Default identity matrix
-
     glm::vec3 position = glm::vec3(0.0f);  // Camera position
     glm::vec3 target = glm::vec3(0.0f, 0.0f, -1.0f);  // Default look-at direction
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);  // Default up direction
@@ -235,6 +257,7 @@ struct Scene {
     std::vector<Camera> cameras;  // List of cameras in the scene
     std::vector<Light> lights;  // List of lights in the scene
     Camera camera;  // Global camera matrix
+
 
     // Template function to add any type of object (Mesh, Camera, or Light)
     template <typename T>
@@ -283,6 +306,14 @@ struct Scene {
     {
         return lights.size();
     }
+    
+    void cleanupScene(std::vector<Mesh>& meshes) {
+        for (auto& mesh : meshes) {
+            mesh.cleanup(); // Call cleanup on each mesh
+        }
+        meshes.clear(); // Clear the scene vector after cleanup
+    }
+
 
     // Clear all meshes, cameras, and lights
     void clearAll()

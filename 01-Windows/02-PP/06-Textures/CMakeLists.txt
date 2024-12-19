@@ -6,9 +6,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 cmake_policy(SET CMP0077 NEW)  # Enables modern CMake variable behavior
 
 if(MSVC)
-    set(DEBUG_BUILD_FOLDER "${CMAKE_BINARY_DIR}/Debug/logs") # Adjust if necessary
+    set(DEBUG_BUILD_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/Debug/logs") # Adjust if necessary
 else()
-    set(DEBUG_BUILD_FOLDER "${CMAKE_BINARY_DIR}/Debug/logs") # Modify for your platform if needed
+    set(DEBUG_BUILD_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/Debug/logs") # Modify for your platform if needed
 endif()
 
 add_custom_target(clean_debug
@@ -44,6 +44,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glm)
 
+
+
 # Collect Source Files
 file(GLOB_RECURSE OGLSources CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
@@ -51,6 +53,7 @@ file(GLOB_RECURSE OGLSources CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/OGL/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/OGL/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/window/*.rc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/resources/*.rc"
 )
 
 # Add executable
@@ -73,6 +76,11 @@ target_include_directories(OGL PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(OGL PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/OGL)
 target_include_directories(OGL PRIVATE ${glew_SOURCE_DIR}/include)
 target_include_directories(OGL PRIVATE ${glm_SOURCE_DIR})
+
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_definitions(-DRESOURCE_DIR="${CMAKE_SOURCE_DIR}/src/resources")
 
 target_precompile_headers(OGL PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/OGL/precomp.h)
 

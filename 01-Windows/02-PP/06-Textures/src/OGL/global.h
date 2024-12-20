@@ -164,7 +164,6 @@ struct Mesh {
         modelMatrix = glm::scale(modelMatrix, scale_);
     }
 
-
     // Cleanup function to delete OpenGL resources
     void cleanup() {
         if (VAO != 0) glDeleteVertexArrays(1, &VAO);
@@ -228,6 +227,8 @@ struct Camera {
     glm::vec3 position = glm::vec3(0.0f);  // Camera position
     glm::vec3 target = glm::vec3(0.0f, 0.0f, -1.0f);  // Default look-at direction
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);  // Default up direction
+    bool isRotating = false;
+    GLfloat angleCamera;
 
     // Calculate the view matrix
     glm::mat4 getViewMatrix() const {

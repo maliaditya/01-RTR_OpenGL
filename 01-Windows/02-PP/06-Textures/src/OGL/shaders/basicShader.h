@@ -13,6 +13,7 @@ const char* combine(const char* str1, const char* str2) {
 
 
     const char* default_uniforms = R"(
+
     #version 460 core
     uniform mat4 u_projectionMatrix;
     uniform mat4 u_viewMatrix;
@@ -35,10 +36,6 @@ const char* combine(const char* str1, const char* str2) {
     out vec2 a_uvAlpha_out;
     void main()
     {   
- 
-        // sample(load) displacement from displacementMap texture
-       
-       //  apply displacement to vertex position
        vec2 scaledUV = a_uv * u_repeatAll;
        float displacement = texture(u_displacementMap,scaledUV).r; // displacement from red channel
        displacement *= u_displacementScale + u_displacementBias; // intensity
@@ -48,7 +45,6 @@ const char* combine(const char* str1, const char* str2) {
        vec4 modelPosition = u_modelMatrix * position;
        vec4 viewPosition  = u_viewMatrix * modelPosition;
        vec4 projectionPosition = u_projectionMatrix * viewPosition;
-       
        gl_Position = projectionPosition;
        
        // size Attenuation

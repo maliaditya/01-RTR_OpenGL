@@ -18,6 +18,10 @@ extern Camera camera;
 extern  int initialize(void);
 
 extern  void resize(int width, int height);
+extern  void mousemove(float xpos, float ypos);
+extern  void l_buttonDown(double xpos, double ypos);
+extern  void l_buttonUp(double xpos, double ypos);
+extern  void keydown(char keydown);
 
 extern  void display(void);
 

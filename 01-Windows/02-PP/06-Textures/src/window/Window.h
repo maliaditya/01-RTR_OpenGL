@@ -25,6 +25,13 @@ class Window
         
         int width;
         int height;
+        char keydown;
+
+        double xpos;
+        double ypos;
+        
+        float clientX;
+        float clientY;
         
         BOOL bFullscreen = FALSE;
 		BOOL isTerminated = FALSE;
@@ -33,6 +40,10 @@ class Window
         // Function Declaration
         void runGameLoop(void); 
         void setResizeCallback(void (*callback)(int, int)); // To register a resize callback
+        void setMouseMoveCallback(void(*callback)(float,float));
+        void setKeyDownCallback(void(*callback)(char));
+        void setMouseLButtonDownCallback(void(*callback)(double,double));
+        void setMouseLButtonUPCallback(void(*callback)(double,double));
 
     private:
 
@@ -43,6 +54,10 @@ class Window
         RECT rect; 
         
         void (*resizeCallback)(int, int) = nullptr; // Resize callback function pointer
+        void (*mousemoveCallback)(float, float) = nullptr;
+        void (*keydownCallback)(char) = nullptr;
+        void (*mouseLButtonDownCallback)(double,double) = nullptr;
+        void (*mouseLButtonUPCallback)(double,double) = nullptr;
 
         // Function declarations
         int init(void);

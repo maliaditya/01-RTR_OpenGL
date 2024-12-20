@@ -10,6 +10,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpstrCmdL
     // Create Window
     Window window(WINWIDTH, WINHEIGHT, "OGL - Texture");
     window.setResizeCallback(resize); 
+    window.setKeyDownCallback(keydown); 
+    window.setMouseMoveCallback(mousemove); 
+    window.setMouseLButtonDownCallback(l_buttonDown); 
+    window.setMouseLButtonUPCallback(l_buttonUp); 
     
     // GLEW Initialization
     if(glewInit() != GLEW_OK)

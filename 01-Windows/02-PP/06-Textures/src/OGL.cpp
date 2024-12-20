@@ -7,8 +7,20 @@ Camera camera;
 Timer timer;
 Logger ogl("OGL.log");
 
-GLuint Texture_Kundali;
-GLuint Texture_Stone;
+GLfloat angleCamera = 0;
+
+struct Cursor{
+    double x; 
+    double y;
+    double lastx;
+    double lasty;
+
+}cursor;
+
+struct Sizes{
+    int width = WINWIDTH;
+    int height = WINHEIGHT;
+}sizes;
 
 int initialize()
 {   
@@ -40,7 +52,7 @@ int initialize()
     floor.texture.displacementMap = 5.0;
     floor.texture.repeatALL = glm::vec2(8,8);
     floor.rotation.x = -M_PI*0.5;
-    floor.translate(glm::vec3(0.0f, -1.0f, -20.0f));
+    floor.translate(glm::vec3(0.0f, -1.0f, -10.0f));
     floor.scale(glm::vec3(1,1,1));
     scene.add(floor);
 
@@ -58,7 +70,7 @@ int initialize()
     walls.texture.metalnessMap = wall_arm;
     walls.texture.roughnessMap = wall_arm;
     walls.texture.displacementMap = wall_norm;
-    walls.translate(glm::vec3(0.0f,1.25f,-20.0f));
+    walls.translate(glm::vec3(0.0f,1.25f,-10.0f));
     walls.scale(glm::vec3(1,1,1));
     scene.add(walls);
 
@@ -78,7 +90,7 @@ int initialize()
     roof.texture.displacementMap = roof_norm;
     roof.texture.repeatALL = glm::vec2(1,1);
     roof.rotation.y = M_PI * 0.75;
-    roof.translate(glm::vec3(0.0f, 3.0f, -20.0f));
+    roof.translate(glm::vec3(0.0f, 3.0f, -10.0f));
     roof.scale(glm::vec3(1,1,1));
     scene.add(roof);
 
@@ -100,7 +112,7 @@ int initialize()
     door.texture.metalnessMap = door_metalness;
     door.texture.roughnessMap = door_roughness;
     door.texture.displacementMap = door_norm;
-    door.translate(glm::vec3(0.0f,0.5f,-17.8f));
+    door.translate(glm::vec3(0.0f,0.5f,-7.8f));
     door.scale(glm::vec3(1,1,1));
     scene.add(door);
 
@@ -121,8 +133,8 @@ int initialize()
     // scene.add(torus);
 
 
-    camera.position = glm::vec3(0.0f,5.2f,5.0f);
-    camera.target = glm::vec3(0.0f,4.f,0.0f);
+    camera.position = glm::vec3(0.0f,0.0f,10.0f);
+    camera.target = glm::vec3(0.0f,0.0f,-10.0f);
     camera.updateTransform();
 
     // Depth & Clear Color
@@ -151,6 +163,9 @@ int initialize()
 void display()
 {
     // code
+
+    
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for(int i=0; i<scene.meshes.size() ; i++)
     {    
@@ -191,9 +206,83 @@ void update()
 
 void resize(int width, int height)
 {
+    sizes.width = width;
+    sizes.height = height;
     glViewport(0, 0, width, height);
     camera.projectionMatrix = glm::perspective(glm::radians(45.0f), (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }
+
+void mousemove(float xpos, float ypos)
+{
+    // code
+    cursor.x = (xpos / sizes.width - 0.5);
+    cursor.y = -(ypos / sizes.height - 1.0);
+    
+    if(camera.isRotating && xpos > cursor.lastx)
+    {
+        angleCamera +=  xpos * 0.0001;
+    }
+    if(camera.isRotating && xpos < cursor.lastx)
+    {
+        angleCamera -=  xpos * 0.0001;
+    }
+    
+    GLfloat radius = 20.0f;
+    GLfloat offset = -10.0f;
+    camera.position.x = 20.0 * glm::sin(angleCamera);
+    camera.position.z = 20.0 * glm::cos(angleCamera) + offset;
+
+    if(!camera.isRotating)
+    {   
+        camera.position.z = 10;
+        camera.position.x = glm::sin(cursor.x) * 5;
+        
+    }
+
+    camera.position.y = cursor.y * 5;
+
+    cursor.lastx = xpos;
+    cursor.lasty = ypos;
+
+}
+
+void l_buttonDown(double xpos, double ypos)
+{
+   
+    camera.isRotating = true;
+}
+void l_buttonUp(double xpos, double ypos)
+{
+   
+    camera.isRotating = false;
+}
+void keydown(char keydown)
+{
+    // code
+    ogl.debug("keydown : ", keydown);
+    if(keydown == 'w' || keydown == 'W')
+    {   
+        camera.position.z -= 0.1;
+    }
+
+    if(keydown == 's' || keydown == 'S')
+    {
+        camera.position.z += 0.1;
+    }
+
+    if(keydown == 'e' || keydown == 'E')
+    {
+        angleCamera += 0.01;
+    }
+    if(keydown == 'q' || keydown == 'Q')
+    {
+        angleCamera -= 0.01;
+    }
+}
+
+
+
+
 
 
 void uninitialize()

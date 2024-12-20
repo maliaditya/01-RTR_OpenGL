@@ -176,6 +176,31 @@ void Window::setResizeCallback(void (*callback)(int, int))
     resizeCallback = callback;  // Set the callback function
 }
 
+
+void Window::setKeyDownCallback(void (*callback)(char))
+{
+    keydownCallback = callback;  // Set the callback function
+}
+
+void Window::setMouseMoveCallback(void (*callback)(float,float))
+{
+    mousemoveCallback = callback;  // Set the callback function
+}
+
+
+void Window::setMouseLButtonDownCallback(void (*callback)(double,double))
+{
+    mouseLButtonDownCallback = callback;  // Set the callback function
+}
+
+
+void Window::setMouseLButtonUPCallback(void (*callback)(double,double))
+{
+    mouseLButtonUPCallback = callback;  // Set the callback function
+}
+
+
+
 void Window::toggleFullscreen()
 {
 	// Variable declarations
@@ -227,10 +252,48 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
             break;
 
         case WM_KILLFOCUS:
-            window->isActive = FALSE;
+            window->isActive = FALSE; 
+
+
             break;
 
+        case WM_MOUSEMOVE:
+
+            window->clientX = LOWORD(lParam);
+            window->clientY = HIWORD(lParam);
+             if (window->mousemoveCallback)
+            {
+                window->mousemoveCallback(window->clientX,window->clientY);  // Call the callback in main.cpp
+            }
+            break;;
+        case WM_LBUTTONUP:
+            window->xpos = LOWORD(lParam);
+            window->ypos = HIWORD(lParam);
+             if (window->mouseLButtonUPCallback)
+            {
+                window->mouseLButtonUPCallback(window->xpos,window->ypos);  // Call the callback in main.cpp
+            }
+            break;
+
+
+        case WM_LBUTTONDOWN:
+            window->xpos = LOWORD(lParam);
+            window->ypos = HIWORD(lParam);
+             if (window->mouseLButtonDownCallback)
+            {
+                window->mouseLButtonDownCallback(window->xpos,window->ypos);  // Call the callback in main.cpp
+            }
+            break;
+
+
         case WM_CHAR:
+            window->keydown = wParam;
+            
+            if (window->keydownCallback)
+            {
+                window->keydownCallback(window->keydown);  // Call the callback in main.cpp
+            }
+
             switch (wParam)
             {
             case 'F':

@@ -1,4 +1,4 @@
-# Diffused Light
+# Phong Ambient + Diffuse + Specular Light - PerVertex
 
 ## Build Steps
 

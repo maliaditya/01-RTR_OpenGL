@@ -45,7 +45,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpstrCmdL
         mainLog.error("GLEW initialization failed.","");
     
     // OGL initialization
-    if(!initialize()==FALSE)
+    if(initialize() == EXIT_FAILURE) 
     {
         mainLog.error(" OGL Initialize Failed","");
         return(1);

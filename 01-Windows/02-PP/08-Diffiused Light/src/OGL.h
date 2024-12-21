@@ -1,5 +1,6 @@
 #pragma once 
 
+#include <cstdlib>  // For EXIT_SUCCESS,
 #include <OGL/precomp.h>
 #include <OGL/global.h>
 #include <OGL/geomat.h>

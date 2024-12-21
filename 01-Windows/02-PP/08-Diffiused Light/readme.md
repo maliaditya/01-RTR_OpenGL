@@ -1,70 +1,84 @@
 # Diffused Light
 
+## Build Steps
+
+1. Download the code.
+2. Open CMD in the project folder.
+3. Run the following commands:
+   - `mkdir build && cd build`
+   - `cmake ..`
+   - `cmake --build . --config Debug`
+4. To run the program:
+   - `Debug\OGL.exe` (from the build folder)
+     OR
+   - Double-click `OGL.exe` in `build/Debug/`.
+
 ## Output
 
 ![alt text](output.png)
 
 ## Technical Details
 
-- Window
+### Window
 
-  - Created window using win32 API.
-  - Open in Center of the screen.
-  - Add Icon on window and taskbar.
-  - Fullscreen toggle on pressing 'f'/'F'.
-  - A Logging mechanism with File I/O.
-  - On Window active setfocus Kill focus.
+- **Created using the Win32 API**.
+- **Centered on the screen**.
+- **Icon**: Added to both window and taskbar.
+- **Fullscreen toggle**: Press 'f'/'F' to toggle fullscreen mode.
+- **Focus handling**: Kills focus when the window is inactive.
+- **Logging**: A file I/O-based logging system is implemented, supporting INFO, DEBUG, WARN, and ERROR levels.
 
-- OpenGL
+### OpenGL
 
-  - Added Procedural Geometries
+- **Procedural Shapes**:
 
-    - Cone
-    - Cube
-    - Sphere
-    - Plane
-    - Torus
+  - Cone
+  - Cube
+  - Sphere
+  - Plane
+  - Torus
 
-  - Structural changes:
+- **Structural Changes**:
 
-    - Geometry : vertices data to alias Geometries
-    - Material : Shaders to alias Materials
-    - Mesh : holds all object data.
-    - Scene : Added Scene to hande all Objects/Mesh.
-    - Camera : Added Camera Struct.
-    - Logger : updated for INFO, DEBUG, WARN, ERROR.
+  - **Geometry**: Holds vertex data.
+  - **Material**: Stores shaders.
+  - **Mesh**: Stores all object data.
+  - **Scene**: Manages objects and meshes.
+  - **Camera**: Added Camera struct for easier scene navigation.
+  - **Logger**: Now supports different log levels (INFO, DEBUG, WARN, ERROR).
 
-  - Added Multitexturing
+- **Multitexturing**:
 
-    - Alpha blending
-    - Displacement
-    - Color Maps
-    - Normals
+  - Alpha blending
+  - Displacement
+  - Color maps
+  - Normals
 
-  - Added camera
+- **Camera**:
 
-    - It is like have functionality like orbitcamera
-    - Moves around the scene in orbit on Mouse L button down and drag on L button UP rotation stops.
-    - Improved camera working now once the camera target is set to target object position, it start looking at that object.
+  - **Orbit-style camera**: Rotate the scene using mouse drag (L button pressed); stops rotating when the L button is released.
+  - **Targeting**: Once set, the camera targets an object and looks at it.
 
-  - Lights
-    - Added diffused Light
+- **Lighting**:
+  - Diffuse light added to the scene.
 
-- Build Tool - Cmake:
+### Build Tool (CMake)
 
-  - Added precomp header for fast compilation.
+- Added precompiled header for faster compilation.
 
-- Third party Libraries and headers used:
-  - GLM - for mathematics
-  - std_image for texture loading
+### Third-Party Libraries Used
 
-## Steps to build
+- **GLM**: For math operations.
+- **stb_image**: For texture loading.
 
-    1. Download the code
-    2. Open CMD in this folder.
-    3. mkdir build && cd build
-    4. cmake ..
-    5. cmake --build . --config Debug
-    6. Debug\OGL.exe
-        OR
-    7. double click on the OGL.exe in build/Debug/OGL.exe
+## Dependencies
+
+To build and run this project, you need the following dependencies:
+
+- **Windows OS**
+- **MSVC 17 (Visual Studio 2019/2022)**: Microsoft Visual Studio 2019 or 2022 with the MSVC 17 compiler.
+- **CMake**: For building the project.
+- **Ninja**: A build system used with CMake to speed up the build process.
+- **GLM**: (automatically fetched from GitHub).
+- **stb_image**: (automatically fetched from GitHub).
+- **GLEW**: OpenGL Extension Wrangler Library (automatically fetched from GitHub).

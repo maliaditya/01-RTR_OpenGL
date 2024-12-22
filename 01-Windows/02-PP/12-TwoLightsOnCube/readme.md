@@ -2,13 +2,14 @@
 
 ## Build Steps
 
-1. Download the code.
-2. Open CMD in the project folder.
-3. Run the following commands:
+- <a href="https://download-directory.github.io/?url=https://github.com/maliaditya/RTR-OpenGL/tree/main/01-Windows/02-PP/12-TwoLightsOnCube" style="display:inline-block;padding:10px 20px;font-size:16px;color:white;background-color:#007bff;text-decoration:none;border-radius:5px;">Download TwolightsOnOneCube</a>
+
+1. Open CMD in the project folder.
+1. Run the following commands:
    - `mkdir build && cd build`
    - `cmake ..`
    - `cmake --build . --config Debug`
-4. To run the program:
+1. To run the program:
    - `Debug\OGL.exe` (from the build folder)
      OR
    - Double-click `OGL.exe` in `build/Debug/`.

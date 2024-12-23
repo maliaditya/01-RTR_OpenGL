@@ -64,12 +64,8 @@ void main()
 
 )";
 
-
-
 const char* fs = combine(phongADSLight,fsp);
 const char* vs = combine(phongADSLight,vsp);
-
-
 
 // Function Declaration
 int initialize(void)
@@ -87,7 +83,7 @@ int initialize(void)
                                     {"a_postion", ATTRIBUTE_POSITION},
                                     {"a_normal", ATTRIBUTE_NORMAL},
                                     {"a_uv", ATTRIBUTE_TEXCOORD}
-                                };    
+                                };
     shaderMaterial.shaderProgramObject = OGL::linkShadersAndAttributes(vertexShader,fragmentShader,shaderMaterial.attributes, "ShaderMaterial");
 
     // Buffer creation form position, normal,indices
@@ -108,8 +104,6 @@ int initialize(void)
 	lights[1].lightDiffuse  = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 	lights[1].lightSpecular = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 	lights[1].lightPosition = glm::vec4(2.0f, 0.0f, 0.0f, 1.0f);
-
-
 
     // Depth
     glEnable(GL_DEPTH_TEST);
@@ -155,7 +149,6 @@ void display(void)
         OGL::setUniform3fv(shaderProgramObject, "u_ks" , materialSpecular);
         OGL::setUniform1f(shaderProgramObject, "u_materialShininess" , materialShininess);
         OGL::setUniform1i(shaderProgramObject, "plfs" , plfs);
-        
 
         // draw
         glBindVertexArray(mesh.VAO);

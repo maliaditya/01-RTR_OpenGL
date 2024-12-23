@@ -16,7 +16,7 @@
 
 ## Output
 
-<video controls src="OGL - FPS_ 164.97 2024-12-23 12-18-42.mp4" title="output"></video>
+![<video controls src="OGL - FPS_ 164.97 2024-12-23 12-18-42.mp4" title="output"></video>](output.gif)
 
 ## Technical Details
 

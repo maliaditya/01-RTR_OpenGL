@@ -91,4 +91,5 @@ To build and run this project, you need the following dependencies:
 - **Ninja**: A build system used with CMake to speed up the build process.
 - **GLM**: (automatically fetched from GitHub).
 - **stb_image**: (automatically fetched from GitHub).
+- **Assimp**: (automatically fetched from GitHub).
 - **GLEW**: OpenGL Extension Wrangler Library (automatically fetched from GitHub).

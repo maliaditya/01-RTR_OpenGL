@@ -60,6 +60,8 @@
 
   - **Orbit-style camera**: Rotate the scene using mouse drag (L button pressed); stops rotating when the L button is released.
   - **Targeting**: Once set, the camera targets an object and looks at it.
+  - Spherical movement around the object
+  - zoom in and zoom out with mouse wheel
 
 - **Lighting**:
 

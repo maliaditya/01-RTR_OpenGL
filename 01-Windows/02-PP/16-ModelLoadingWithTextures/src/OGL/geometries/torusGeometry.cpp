@@ -79,6 +79,7 @@ namespace OGL{
         Geometry geometry;
         geometry.name = "Torus";
         generateTorusGeometry(outerRadius, innerRadius,numMajor, numMinor,geometry.positions, geometry.normals, geometry.uv, geometry.indices  );
+        geometry.setupBuffers();
         return(geometry);
     }
 

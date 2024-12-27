@@ -11,24 +11,6 @@ Mesh  createMesh(Geometry geometry, Material material)
     Mesh mesh;
     mesh.geometry = geometry;
     mesh.material = material;
-    
-    genVertexArrays(&mesh.VAO);
-    
-    genBuffers(&mesh.positionsVBO, mesh.geometry.positions);
-    vertexAttribPointer(ATTRIBUTE_POSITION, 3);
-    unbindBuffer();
-    
-    genBuffers(&mesh.normalsVBO, mesh.geometry.normals);
-    vertexAttribPointer(ATTRIBUTE_NORMAL, 3);
-    unbindBuffer();
-    
-    genBuffers(&mesh.uvVBO, mesh.geometry.uv);
-    vertexAttribPointer(ATTRIBUTE_TEXCOORD, 2);
-    unbindBuffer();
-
-    genBuffers(&mesh.indicesEBO,mesh.geometry.indices);
-    unbindVertexArray();
-
     return mesh;
 }
 

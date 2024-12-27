@@ -13,10 +13,27 @@ ATTRIBUTE_TEXCOORD,
 enum MaterialType {
     BASIC_MATERIAL,
     PHONG_MATERIAL,
+    SHADER_MATERIAL
 };
 
 #define M_PI 3.14159265358979323846264338327950288
 
+
+struct Texture 
+{
+    GLuint colorMap = 0;
+    GLuint cubeMap = 0;
+    GLuint alphaMap = 0;
+    GLuint aoMap = 0;
+    GLuint roughnessMap = 0;
+    GLuint  metalnessMap = 0;
+    GLuint normalMap = 0;
+    GLuint displacementMap = 0;
+    GLfloat displacementBias = 0.0f;
+    GLfloat displacementScale = 0.0f;
+    glm::vec2 repeatALL = glm::vec2(1,1);
+
+};
 
 struct Geometry  // vertexdata
 {
@@ -25,6 +42,68 @@ struct Geometry  // vertexdata
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> uv; 
     std::vector<GLuint>    indices; 
+    Texture texture;
+
+        GLuint VAO, VBO, EBO; // OpenGL buffers
+
+        // Constructor to initialize buffers
+        Geometry() : VAO(0), VBO(0), EBO(0) {}
+
+        // Method to set up buffers
+        void setupBuffers() {
+            glGenVertexArrays(1, &VAO);
+            glGenBuffers(1, &VBO);
+            glGenBuffers(1, &EBO);
+
+            glBindVertexArray(VAO);
+
+            // Bind and fill vertex data
+            glBindBuffer(GL_ARRAY_BUFFER, VBO);
+            std::vector<float> vertexData;
+            for (size_t i = 0; i < positions.size(); ++i) {
+                vertexData.push_back(positions[i].x);
+                vertexData.push_back(positions[i].y);
+                vertexData.push_back(positions[i].z);
+                if (i < normals.size()) {
+                    vertexData.push_back(normals[i].x);
+                    vertexData.push_back(normals[i].y);
+                    vertexData.push_back(normals[i].z);
+                } else {
+                    vertexData.insert(vertexData.end(), {0.0f, 0.0f, 0.0f});
+                }
+                if (i < uv.size()) {
+                    vertexData.push_back(uv[i].x);
+                    vertexData.push_back(uv[i].y);
+                } else {
+                    vertexData.insert(vertexData.end(), {0.0f, 0.0f});
+                }
+            }
+            glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
+
+            // Bind and fill index data
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
+
+            // Define vertex attributes
+            glVertexAttribPointer(ATTRIBUTE_POSITION, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // Positions
+            glEnableVertexAttribArray(ATTRIBUTE_POSITION);
+
+            glVertexAttribPointer(ATTRIBUTE_NORMAL, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // Normals
+            glEnableVertexAttribArray(ATTRIBUTE_NORMAL);
+
+            glVertexAttribPointer(ATTRIBUTE_TEXCOORD, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // UVs
+            glEnableVertexAttribArray(ATTRIBUTE_TEXCOORD);
+
+            glBindVertexArray(0); // Unbind VAO
+        }
+
+        void display(GLuint VAO)
+        {
+            // bind vao
+            glBindVertexArray(VAO);
+            glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
 };
 
 // Define a generic Uniform structure for different types of uniforms
@@ -45,6 +124,8 @@ struct Material {
     std::unordered_map<std::string, Uniform<float>> uniforms; // Example: float uniforms
     std::unordered_map<std::string, GLuint> attributes;    
 
+    Material()
+        : shaderProgramObject(0) , type(SHADER_MATERIAL) {}
 
     // Add uniforms of different types
     template <typename T>
@@ -59,20 +140,6 @@ struct Material {
 
 };
 
-struct Texture 
-{
-    GLuint colorMap = 0;
-    GLuint alphaMap = 0;
-    GLuint aoMap = 0;
-    GLuint roughnessMap = 0;
-    GLuint  metalnessMap = 0;
-    GLuint normalMap = 0;
-    GLuint displacementMap = 0;
-    GLfloat displacementBias = 0.0f;
-    GLfloat displacementScale = 0.0f;
-    glm::vec2 repeatALL = glm::vec2(1,1);
-
-};
 
 // data: vertex data
 struct Mesh {   

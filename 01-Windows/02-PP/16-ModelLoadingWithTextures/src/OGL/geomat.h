@@ -11,3 +11,4 @@
 
 // Materials
 #include "materials/basicMaterial.h"
+#include "materials/shaderMaterial.h"

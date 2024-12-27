@@ -30,7 +30,7 @@
             }
         }
         {
-            shaderlog.info("Shader Compilation Success.","");
+            shaderlog.info( shaderName + " Compilation Success.","");
         }
         return shader;
     }
@@ -63,7 +63,7 @@
         }
         else
         {
-            shaderlog.info("Shader Program Compilation Success.","");
+            shaderlog.info(shaderName + "  Program Compilation Success.","");
         }
 
         return shaderProgramObject;

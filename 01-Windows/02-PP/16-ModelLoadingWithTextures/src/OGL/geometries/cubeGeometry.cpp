@@ -87,6 +87,7 @@ namespace OGL {
         Geometry geometry;
         geometry.name = "Cube";
         generateCubeWithGridGeometry(size,gridSize,  geometry.positions, geometry.normals, geometry.uv, geometry.indices  );
+        geometry.setupBuffers();
         return geometry;
     }
 

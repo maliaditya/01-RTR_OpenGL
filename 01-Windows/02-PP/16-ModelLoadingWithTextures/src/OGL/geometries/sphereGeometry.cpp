@@ -63,6 +63,7 @@ namespace OGL{
         Geometry geometry;
         geometry.name = "Sphere";
         generateSphereGeometry(radius,slices, stack,geometry.positions, geometry.normals,geometry.uv,geometry.indices);
+        geometry.setupBuffers();
         return(geometry);
     }
 

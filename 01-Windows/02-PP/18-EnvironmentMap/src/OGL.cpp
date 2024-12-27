@@ -13,6 +13,17 @@ Logger ogl("OGL.log");
 int initialize()
 {   
     // Code
+        std::vector<std::string> faces
+    {
+        std::string(RESOURCE_DIR)+"/textures/skybox/right.jpg",
+        std::string(RESOURCE_DIR)+"/textures/skybox/left.jpg",
+        std::string(RESOURCE_DIR)+"/textures/skybox/top.jpg",
+        std::string(RESOURCE_DIR)+"/textures/skybox/bottom.jpg",
+        std::string(RESOURCE_DIR)+"/textures/skybox/front.jpg",
+        std::string(RESOURCE_DIR)+"/textures/skybox/back.jpg"
+    };
+    GLuint cubemapTexture = OGL::loadCubemap(faces); 
+
         
     const char* vertexShaderSource = R"(
         #version 460 core
@@ -25,9 +36,15 @@ int initialize()
         in vec2 a_uv;
 
         out vec2 a_uv_out;
+        out vec3 a_position_out;
+        out vec3 a_normal_out;
 
         void main()
         {
+
+            
+            a_normal_out = mat3(transpose(inverse(u_modelMatrix))) * a_normal;
+            a_position_out = vec3(u_modelMatrix * vec4(a_position, 1.0));
             gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * vec4(a_position, 1.0f);
             a_uv_out = a_uv;
         }
@@ -37,11 +54,21 @@ int initialize()
         #version 460 core
         uniform sampler2D texture1;
 
+        uniform samplerCube skybox;
+        uniform vec3 cameraPos;
+
         in vec2 a_uv_out;
+        in vec3 a_position_out;
+        in vec3 a_normal_out;
+
         out vec4 FragColor;
         void main()
         {
-            FragColor = texture(texture1, a_uv_out);
+            vec3 I = normalize(a_position_out - cameraPos);
+            vec3 R = reflect(I, normalize(a_normal_out));
+            vec4 skyboxcolor = vec4(texture(skybox, R).rgb, 1.0);
+            vec4 texturecolor = texture(texture1, a_uv_out);
+            FragColor = texturecolor * skyboxcolor;
         }
     )";
 
@@ -52,6 +79,7 @@ int initialize()
     Material shaderMaterial = OGL::shaderMaterial(vertexShaderSource, fragmentShaderSource);
     Mesh helmet = OGL::createMesh(cubeGeometry, shaderMaterial);
     helmet.name = "helmet";
+    helmet.texture.cubeMap = cubemapTexture;
     helmet.rotation.x = M_PI*0.5;
     helmet.texture.colorMap = cubeGeometry.texture.colorMap;
     helmet.translate(glm::vec3(0.0f,0.0f,0.0f));
@@ -88,18 +116,6 @@ int initialize()
         }
     )";
 
-
-
-    std::vector<std::string> faces
-    {
-        std::string(RESOURCE_DIR)+"/textures/skybox/right.jpg",
-        std::string(RESOURCE_DIR)+"/textures/skybox/left.jpg",
-        std::string(RESOURCE_DIR)+"/textures/skybox/top.jpg",
-        std::string(RESOURCE_DIR)+"/textures/skybox/bottom.jpg",
-        std::string(RESOURCE_DIR)+"/textures/skybox/front.jpg",
-        std::string(RESOURCE_DIR)+"/textures/skybox/back.jpg"
-    };
-    GLuint cubemapTexture = OGL::loadCubemap(faces); 
 
     Geometry cubeGeom = OGL::cubeGeometry(75,1);
     Material skyboxShaderMaterial = OGL::shaderMaterial(skyBoxVertexShaderSource,skyBoxFragmentShaderSource);
@@ -140,11 +156,19 @@ void display()
     for(auto& mesh : scene.meshes)
     {   
         if(mesh.name == "helmet")
-        {       
+        {    
+
+            
             glUseProgram(mesh.material.shaderProgramObject);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, mesh.texture.colorMap);
             OGL::setUniform1i(mesh.material.shaderProgramObject, "u_colorMap", 0);
+
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_CUBE_MAP, mesh.texture.cubeMap);
+            OGL::setUniform1i(mesh.material.shaderProgramObject, "skybox", 1);
+        
+            OGL::setUniform3fv(mesh.material.shaderProgramObject, "cameraPos", camera.position);
 
             OGL::displayShader(camera, mesh);
                 

@@ -90,8 +90,8 @@ void mousewheel(int delta, int x, int y)
     mainLog.debug("delta : ",delta);
 
     
-    GLfloat zoomSpeed = 0.1f; // Speed of zoom
-    GLfloat minRadius = 2.0f; // Minimum distance to target
+    GLfloat zoomSpeed = 0.01f; // Speed of zoom
+    GLfloat minRadius = 1.0f; // Minimum distance to target
     GLfloat maxRadius = 1000.0f; // Maximum distance to target
 
     // Adjust the orbit radius based on mouse wheel input

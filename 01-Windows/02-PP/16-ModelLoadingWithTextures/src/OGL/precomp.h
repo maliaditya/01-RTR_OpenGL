@@ -6,6 +6,7 @@
 #include <iostream>                                                    
 #include <unordered_map>                                                    
 #include <cmath>    
+#include <filesystem> // Resource
 
 
 // Assimp                                                    
@@ -15,7 +16,8 @@
 
 // Window                                                    
 #include <windows.h>                                                    
-#include <window/Window.h>                                                    
+#include <window/Window.h>   
+
 
 // GLEW                                                    
 #include <GL/glew.h>                                                    
@@ -33,6 +35,7 @@
 // OGL Utils                                                    
 #include <OGL/buffer.h>                                                    
 #include <OGL/shader.h>                                                    
+#include <OGL/texture.h>
 
 // shaders                                                    
 #include <OGL/shaders/shaders.h>                                                    

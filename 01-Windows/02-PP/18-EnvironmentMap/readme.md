@@ -1,8 +1,8 @@
-# Skybox
+# Environment Mapping
 
 ## Build Steps
 
-- <a href="https://download-directory.github.io/?url=https://github.com/maliaditya/RTR-OpenGL/tree/main/01-Windows/02-PP/15-ModelLoadingWithTextures" style="display:inline-block;padding:10px 20px;font-size:16px;color:white;background-color:#007bff;text-decoration:none;border-radius:5px;">1. Click here to download this repo</a>
+- <a href="https://download-directory.github.io/?url=https://github.com/maliaditya/RTR-OpenGL/tree/main/01-Windows/02-PP/18-EnvironmentMap" style="display:inline-block;padding:10px 20px;font-size:16px;color:white;background-color:#007bff;text-decoration:none;border-radius:5px;">1. Click here to download this repo</a>
 
 2. Open CMD in the project folder.
 3. Run the following commands:
@@ -78,6 +78,7 @@
 
 - **CubeMap**
   - Added Skybox
+  - Added Environment mapping
 
 ### Build Tool (CMake)
 

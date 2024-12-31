@@ -54,6 +54,18 @@ int initialize(void)
         uniform int lightEnabled;
         uniform sampler2D colorMap;
         
+        struct Light {
+            vec3 position;  
+        
+            vec3 ambient;
+            vec3 diffuse;
+            vec3 specular;
+            
+            float constant;
+            float linear;
+            float quadratic;
+        };
+
         in vec3 a_normal_out;
         in vec2 a_uv_out;
         in vec3 fragPos;
@@ -63,13 +75,14 @@ int initialize(void)
 
         void main()
         {
-            vec3 color = texture(colorMap,a_uv_out ).rgb;
+            vec3 color = texture(colorMap, a_uv_out ).rgb;
 
             float ambientStrength = 0.1;
-            vec3 ambientLight = lightColor * ambientStrength;
+            vec3 ambientLight = lightColor * color;
             
             vec3 norm = normalize(a_normal_out);
-            vec3 lightDirection = normalize(lightPosition-fragPos);
+            vec3 lightDirection = normalize(lightPosition-fragPos); // phon
+            //vec3 lightDirection =    normalize(-lightPosition);  
             float diff  = max(dot(norm,lightDirection),0.0);
             vec3 diffuse = diff * lightColor;
 
@@ -78,6 +91,13 @@ int initialize(void)
             vec3 reflectDirection = reflect(-lightDirection,norm);
             float spec = pow(max(dot(viewDirection,reflectDirection),0.0),32);
             vec3 specular = specularStrength * spec * lightColor;
+
+            // attenuation
+            // float distance    = length(lightPosition - fragPos);
+            // float attenuation = 1.0 / (1.0f + 0.09f * distance + 0.032f * (distance * distance));  
+            // ambientLight  *= attenuation; 
+            // diffuse  *= attenuation;
+            // specular *= attenuation;  
 
             vec3 result =   (ambientLight + diffuse + specular) * color ;
             if(lightEnabled == 1)
@@ -103,7 +123,7 @@ int initialize(void)
     scene.add(moonmesh);
 
     
-    Geometry nebulaGeometry = OGL::sphereGeometry(75);
+    Geometry nebulaGeometry = OGL::sphereGeometry(55);
     Mesh nebula = OGL::createMesh(nebulaGeometry, cubeshaderMaterial);
     nebula.name = "nebula";
     nebula.texture.colorMap = OGL::loadTexture(std::string(RESOURCE_DIR)+"/textures/planets/miklyway.jpg");
